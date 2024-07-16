@@ -33,10 +33,6 @@ public class UserRegistrationTest {
                 .dateOfBirth("21/06/2000")
                 .build();
 
-        // Perform actions with the user data on the website (e.g., fill out registration form)
-        // Example:
-        // WebElement usernameField = driver.findElement(By.id("username"));
-        // usernameField.sendKeys(user.getUsername());
         driver.findElement((By.id("first-name"))).sendKeys(user.getFirstName());
         driver.findElement((By.id("last-name"))).sendKeys(user.getLastName());
         driver.findElement((By.id("job-title"))).sendKeys(user.getJobTitle());
