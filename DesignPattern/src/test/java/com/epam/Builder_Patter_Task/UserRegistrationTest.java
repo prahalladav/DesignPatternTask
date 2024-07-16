@@ -1,35 +1,58 @@
 package com.epam.Builder_Patter_Task;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.testng.annotations.Test;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+
+import java.time.Duration;
+
 public class UserRegistrationTest {
-    public static void main(String[] args) {
-        User user = new User.UserBuilder()
-                .setFirstname("Prahallada")
-                .setLastname("V")
-                .setJobtitle("Automation Test Engineer")
-                .setHighereducation("B.Tech")
-                .setSex("Male")
-                .setExperience(1)
-                .setDate("15-May")
+
+    private WebDriver driver;
+
+    @BeforeClass
+    public void setup() {
+        BrowserFactory browserFactory = BrowserFactory.getInstance();
+        driver = browserFactory.getDriver();
+        driver.get("https://formy-project.herokuapp.com/form");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+    }
+
+    @Test
+    public void testUserRegistration() {
+
+        User user = new User.UserBuilder("Prahallada", "V")
+                .jobTitle("Software Engineer")
+                .educationLevel("College")
+                .sex("Male")
+                .yearsOfExperience("1")
+                .dateOfBirth("21/06/2000")
                 .build();
 
-        String expectedFirstname = "Prahallada";
-        String expectedLastname = "V";
-        String expectedJobtitle = "Automation Test Engineer";
-        String expectedHighereducation = "B.Tech";
-        String expectedSex = "Male";
-        int expectedExperience = 1;
-        String expectedDate = "15-May";
+        // Perform actions with the user data on the website (e.g., fill out registration form)
+        // Example:
+        // WebElement usernameField = driver.findElement(By.id("username"));
+        // usernameField.sendKeys(user.getUsername());
+        driver.findElement((By.id("first-name"))).sendKeys(user.getFirstName());
+        driver.findElement((By.id("last-name"))).sendKeys(user.getLastName());
+        driver.findElement((By.id("job-title"))).sendKeys(user.getJobTitle());
+        driver.findElement(By.xpath("//input[@id=\"radio-button-3\"]")).click();
+        driver.findElement(By.xpath("//input[@id=\"checkbox-3\"]")).click();
 
-        if (user.getFirstname().equals(expectedFirstname) &&
-                user.getLastname().equals(expectedLastname) &&
-                user.getJobtitle().equals(expectedJobtitle) &&
-                user.getHighereducation().equals(expectedHighereducation) &&
-                user.getSex().equals(expectedSex) &&
-                user.getExperience() == expectedExperience &&
-                user.getDate().equals(expectedDate)) {
-            System.out.println("Test case passed. User details are correct.");
-        } else {
-            System.out.println("Test failed! User details do not match expected values.");
-        }
+        WebElement dropdownElement = driver.findElement(By.xpath("//select[@id=\"select-menu\"]"));
+        Select dropdown = new Select(dropdownElement);
+        dropdown.selectByValue("2");
+        driver.findElement(By.xpath("//input[@placeholder=\"mm/dd/yyyy\"]")).sendKeys(user.getDateOfBirth());
+        driver.findElement(By.xpath("//a[text()='Submit']")).click();
+
+    }
+
+    @AfterClass
+    public void teardown() {
+        BrowserFactory.getInstance().quitDriver();
     }
 }

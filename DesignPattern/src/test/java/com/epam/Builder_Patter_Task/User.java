@@ -1,99 +1,74 @@
 package com.epam.Builder_Patter_Task;
 
 public class User {
-    private String firstname;
-    private String lastname;
-    private String jobtitle;
-    private String highereducation;
-    private String sex;
-    private int experience;
-    private String date;
+    private final String firstName;
+    private final String lastName;
+    private final String jobTitle;
+    private final String educationLevel;
+    private final String sex;
+    private final String yearsOfExperience;
+    private final String dateOfBirth;
 
-    public User(String firstname, String lastname, String jobtitle, String highereducation, String sex, int experience, String date) {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.jobtitle = jobtitle;
-        this.highereducation = highereducation;
-        this.sex = sex;
-        this.experience = experience;
-        this.date = date;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getJobtitle() {
-        return jobtitle;
-    }
-
-    public String getHighereducation() {
-        return highereducation;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public int getExperience() {
-        return experience;
-    }
-
-    public String getDate() {
-        return date;
+    private User(UserBuilder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.jobTitle = builder.jobTitle;
+        this.educationLevel = builder.educationLevel;
+        this.sex = builder.sex;
+        this.yearsOfExperience = builder.yearsOfExperience;
+        this.dateOfBirth = builder.dateOfBirth;
     }
 
     public static class UserBuilder {
-        private String firstname;
-        private String lastname;
-        private String jobtitle;
-        private String highereducation;
+        private final String firstName;
+        private final String lastName;
+        private String jobTitle;
+        private String educationLevel;
         private String sex;
-        private int experience;
-        private String date;
+        private String yearsOfExperience;
+        private String dateOfBirth;
 
-        public UserBuilder setFirstname(String firstname) {
-            this.firstname = firstname;
+        public UserBuilder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public UserBuilder jobTitle(String jobTitle) {
+            this.jobTitle = jobTitle;
             return this;
         }
 
-        public UserBuilder setLastname(String lastname) {
-            this.lastname = lastname;
+        public UserBuilder educationLevel(String educationLevel) {
+            this.educationLevel = educationLevel;
             return this;
         }
 
-        public UserBuilder setJobtitle(String jobtitle) {
-            this.jobtitle = jobtitle;
-            return this;
-        }
-
-        public UserBuilder setHighereducation(String highereducation) {
-            this.highereducation = highereducation;
-            return this;
-        }
-
-        public UserBuilder setSex(String sex) {
+        public UserBuilder sex(String sex) {
             this.sex = sex;
             return this;
         }
 
-        public UserBuilder setExperience(int experience) {
-            this.experience = experience;
+        public UserBuilder yearsOfExperience(String yearsOfExperience) {
+            this.yearsOfExperience = yearsOfExperience;
             return this;
         }
 
-        public UserBuilder setDate(String date) {
-            this.date = date;
+        public UserBuilder dateOfBirth(String dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
             return this;
         }
 
         public User build() {
-            return new User(firstname, lastname, jobtitle, highereducation, sex, experience, date);
+            return new User(this);
         }
     }
 
+    // Getters for fields
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public String getJobTitle() { return jobTitle; }
+    public String getEducationLevel() { return educationLevel; }
+    public String getSex() { return sex; }
+    public String getYearsOfExperience() { return yearsOfExperience; }
+    public String getDateOfBirth() { return dateOfBirth; }
 }
